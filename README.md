@@ -1,28 +1,28 @@
 # DarkPhotonAnalysisV2
 
-For 2017 data nTuple production:
-```
-ssh "you"@lxplus6.cern.ch ##important here SLC6
-cmsrel CMSSW_9_2_1
-cd CMSSW_9_2_1/src
-cmsenv
-git clone https://github.com/jsalfeld/DarkPhotonAnalysisV2
-cd DarkPhotonAnalysisV2/DimuonAnalysis/test/
-cmsRun scout2017_cfg.py
-```
-There is a macro to do selection with, in ```DarkPhotonAnalysisV2/DimuonAnalysis/macros/```. There is a setup ```DarkPhotonAnalysisV2/DimuonAnalysis/crab/``` in to submit samples defined in ```DarkPhotonAnalysisV2/DimuonAnalysis/python/samples``` 
+For 2022 data nTuple production:
 
-
-For 2018 data nTuple production:
 ```
-ssh "you"@lxplus.cern.ch
-SCRAM_ARCH=slc7_amd64_gcc700
-cmsrel CMSSW_10_1_6
-cd CMSSW_10_1_6/src
-cmsenv
-git clone https://github.com/jsalfeld/DarkPhotonAnalysisV2
-cd DarkPhotonAnalysisV2/DimuonAnalysis/
-scram b -j 8
-cd test
-cmsRun scout2018_cfg.py
+#!/bin/bash
+RELEASE=CMSSW_12_4_3
+
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+scram p CMSSW $RELEASE
+cd $RELEASE/src
+git clone https://github.com/z4027163/darkphoton_run3.git
+eval `scram runtime -sh`
+scram b -j8
+
+cp $RELEASE/src/darkphoton_run3/DimuonAnalysis/test/template_cfg.py scout_cfg.py
+
+#or have some input.root
+xrdcp root://cms-xrd-global.cern.ch//$1 input.root 
+
+cmsRun scout_cfg.py
+
+oname=`echo $1 | sed 's/.*\///'`
+#transfer output
+mv output.root $oname
+xrdcp -f $oname root://submit50.mit.edu//store/user/wangzqe/darkphoton/run3/
+
 ```
