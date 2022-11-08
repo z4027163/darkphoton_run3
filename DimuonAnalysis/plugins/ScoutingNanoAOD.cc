@@ -359,6 +359,7 @@ ScoutingNanoAOD::ScoutingNanoAOD(const edm::ParameterSet& iConfig):
   tree->Branch("vtxYError"            , &vtxYError  );
   tree->Branch("vtxZError"            , &vtxZError  );
 
+  tree->Branch("vtxChi2"                 , &vtxChi2     );
   //Electrons
   tree->Branch("n_ele"            	   ,&n_ele 			, "n_ele/i"		);
   tree->Branch("Electron_pt"         ,&Electron_pt 		 		);
