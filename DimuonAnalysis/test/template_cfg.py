@@ -48,7 +48,7 @@ params.register(
 
 params.register(
     'GlobalTagData',
-    '<not available>',
+    '112X_mcRun3_2021_realistic_v16',
     VarParsing.multiplicity.singleton,VarParsing.varType.string,
     'Process name for the HLT paths'
 )

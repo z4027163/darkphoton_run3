@@ -296,7 +296,7 @@ private:
 */        
   // TTree carrying the event weight information
   TTree* tree;
-
+  TH1F *htotal;
   //Run and lumisection
   int run;
   int lumSec;
@@ -338,6 +338,8 @@ ScoutingNanoAOD::ScoutingNanoAOD(const edm::ParameterSet& iConfig):
  // Access the TFileService
   edm::Service<TFileService> fs;
 
+  //Create histogram
+  htotal = fs->make<TH1F>("htotal","htotal",1,0,2);
   // Create the TTree
   tree = fs->make<TTree>("tree"       , "tree");
 
@@ -779,7 +781,8 @@ for (auto muons_iter = muonsH->begin(); muons_iter != muonsH->end(); ++muons_ite
       }
  }
 
- 
+
+ htotal->Fill(1); 
  if(n_mu>=2) tree->Fill();	
  clearVars();
 	
