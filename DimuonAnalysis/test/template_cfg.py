@@ -6,7 +6,7 @@ params = VarParsing('analysis')
 
 params.register(
     'isMC',
-    True,
+    False,
     VarParsing.multiplicity.singleton,VarParsing.varType.bool,
     'Flag to indicate whether the sample is simulation or data'
 )
@@ -86,7 +86,7 @@ process.options = cms.untracked.PSet(
 )
 
 # How many events to process
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 # Input EDM files
 process.source = cms.Source("PoolSource",
@@ -129,12 +129,15 @@ process.gentree = cms.EDAnalyzer("LHEWeightsTreeMaker",
 '''
 
 #from DarkPhotonAnalysis.DimuonAnalysis2018.TriggerPaths_cfi import getL1Conf
-L1Info = ['L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7', 'L1_DoubleMu_12_5','L1_DoubleMu_15_7','L1_TripleMu_5_3_3','L1_TripleMu_5_5_3','L1_QuadMu0','L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4','L1_DoubleMu4p5er2p0_SQ_OS_Mass7to18','L1_DoubleMu4_SQ_OS_dR_Max1p2','L1_SingleMu22','L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4','L1_DoubleMu4p5_SQ_OS_dR_Max1p2','L1_DoubleMu4p5_SQ_OS','L1_DoubleMu0er1p5_SQ_dR_Max1p4','L1_DoubleMu0er2p0_SQ_dR_Max1p4','L1_DoubleMu0_SQ']
+#L1Info = ['L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7', 'L1_DoubleMu_12_5','L1_DoubleMu_15_7','L1_TripleMu_5_3_3','L1_TripleMu_5_5_3','L1_QuadMu0','L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4','L1_DoubleMu4p5er2p0_SQ_OS_Mass7to18','L1_DoubleMu4_SQ_OS_dR_Max1p2','L1_SingleMu22','L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4','L1_DoubleMu4p5_SQ_OS_dR_Max1p2','L1_DoubleMu4p5_SQ_OS','L1_DoubleMu0er1p5_SQ_dR_Max1p4','L1_DoubleMu0er2p0_SQ_dR_Max1p4','L1_DoubleMu0_SQ']
+
+L1Info = ['L1_DoubleMu4p5er2p0_SQ_OS_Mass_Min7', 'L1_DoubleMu_12_5','L1_DoubleMu_15_7','L1_TripleMu_5_3_3','L1_TripleMu_5_5_3','L1_QuadMu0','L1_DoubleMu0er1p5_SQ_OS_dR_Max1p4','L1_DoubleMu4p5er2p0_SQ_OS_Mass7to18','L1_DoubleMu4_SQ_OS_dR_Max1p2','L1_SingleMu22','L1_DoubleMu0er1p4_SQ_OS_dR_Max1p4','L1_DoubleMu4p5_SQ_OS_dR_Max1p2','L1_DoubleMu4p5_SQ_OS','L1_DoubleMu0er1p5_SQ_dR_Max1p4','L1_DoubleMu0er2p0_SQ_dR_Max1p4','L1_DoubleMu0_SQ','L1_DoubleMu0_OQ','L1_DoubleMu0','L1_DoubleMu0_SQ_OS','L1_DoubleMu0_Mass_Min1','L1_DoubleMu8_SQ','L1_DoubleMu0er2p0_SQ_OS_dR_Max1p4','L1_DoubleMu0er1p5_SQ','L1_DoubleMu0er1p5_SQ_OS','L1_DoubleMu4_SQ_OS','L1_DoubleMu4p5er2p0_SQ_OS']
+
 # Make tree
 process.mmtree = cms.EDAnalyzer('ScoutingNanoAOD',
 
     	triggerresults   = cms.InputTag("TriggerResults", "", params.trigProcess),
-        doL1 = cms.bool(False),
+        doL1 = cms.bool(True),
         triggerConfiguration = cms.PSet(
     		hltResults            = cms.InputTag('TriggerResults','','HLT'),
     		l1tResults            = cms.InputTag(''),
@@ -158,4 +161,8 @@ process.mmtree = cms.EDAnalyzer('ScoutingNanoAOD',
     	#geneventinfo     = cms.InputTag("generator"),
 
 )
-process.p = cms.Path(                  process.mmtree)
+
+if params.isMC : 
+    process.p = cms.Path(                  process.mmtree)
+else:
+    process.p = cms.Path(   process.gtStage2Digis+process.mmtree)
