@@ -12,7 +12,7 @@ cd $RELEASE/src
 git clone https://github.com/z4027163/darkphoton_run3.git
 eval `scram runtime -sh`
 scram b -j8
-
+cd ../..
 cp $RELEASE/src/darkphoton_run3/DimuonAnalysis/test/template_cfg.py scout_cfg.py
 
 #or have some input.root
