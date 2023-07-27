@@ -9,7 +9,7 @@ RELEASE=CMSSW_12_4_3
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 scram p CMSSW $RELEASE
 cd $RELEASE/src
-git clone https://github.com/z4027163/darkphoton_run3.git
+git clone -b F02 https://github.com/z4027163/darkphoton_run3.git
 eval `scram runtime -sh`
 scram b -j8
 cd ../..
