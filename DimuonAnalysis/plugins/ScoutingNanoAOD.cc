@@ -300,7 +300,7 @@ private:
   //Run and lumisection
   int run;
   int lumSec;
-
+  int event;
 };
 
 ScoutingNanoAOD::ScoutingNanoAOD(const edm::ParameterSet& iConfig): 
@@ -347,7 +347,7 @@ ScoutingNanoAOD::ScoutingNanoAOD(const edm::ParameterSet& iConfig):
     
   tree->Branch("lumSec"		, &lumSec			 , "lumSec/i" );
   tree->Branch("run"			, &run				 , "run/i" );
-    
+  tree->Branch("event"                    , &event                           , "event/i" );
   // Triggers
   tree->Branch("trig"                 , &trig                          , "trig/b");
   tree->Branch("l1Result"		, "std::vector<bool>"             ,&l1Result_	, 32000, 0);		
@@ -509,7 +509,7 @@ void ScoutingNanoAOD::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   run = iEvent.eventAuxiliary().run();
   lumSec = iEvent.eventAuxiliary().luminosityBlock();
-
+  event = iEvent.eventAuxiliary().event();
   //print hlt trigger
 /*
   const edm::TriggerNames& trigNames = iEvent.triggerNames(*triggerResultsH);
