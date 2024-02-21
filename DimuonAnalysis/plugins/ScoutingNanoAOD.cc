@@ -200,7 +200,7 @@ private:
   vector<Float16_t>	    Electron_HoE;
   vector<Float16_t>	    Electron_ooEMOop;
   vector<Float16_t>	    Electron_mHits;
-  vector<Float16_t>        Electron_charge;
+  vector<Int_t>        Electron_charge;
   vector<Float16_t>        Electron_ecaliso;
   vector<Float16_t>	    Electron_hcaliso;
   vector<Float16_t>        Electron_tkiso;
@@ -609,7 +609,7 @@ void ScoutingNanoAOD::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       Electron_HoE.push_back(electrons_iter->hOverE());	
       Electron_ooEMOop.push_back(electrons_iter->ooEMOop());
       Electron_mHits.push_back(electrons_iter->missingHits());
-      Electron_charge.push_back(electrons_iter->charge());
+      Electron_charge.push_back(electrons_iter->trkcharge()[0]);
       Electron_tkiso.push_back(electrons_iter->trackIso());
       Electron_ecaliso.push_back(electrons_iter->ecalIso());
       Electron_hcaliso.push_back(electrons_iter->hcalIso());
